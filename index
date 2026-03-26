@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>LENQ — Día 1</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;600;700;900&family=Barlow+Condensed:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { width:1080px; height:1080px; overflow:hidden; background:#111827; font-family:'Barlow',sans-serif; }
+  .post { width:1080px; height:1080px; position:relative; overflow:hidden; background:#111827; }
+
+  .bg-gradient {
+    position:absolute; inset:0;
+    background:
+      radial-gradient(ellipse 70% 55% at 75% 22%, rgba(0,170,220,0.15) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 42% at 12% 80%, rgba(61,69,80,0.28) 0%, transparent 56%),
+      linear-gradient(150deg, #0d1219 0%, #111827 52%, #0c1420 100%);
+  }
+
+  .bg-grid {
+    position:absolute; inset:0;
+    background-image:
+      linear-gradient(rgba(0,170,220,0.032) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,170,220,0.032) 1px, transparent 1px);
+    background-size:54px 54px;
+  }
+
+  .glow-tr {
+    position:absolute; top:-130px; right:-130px; width:580px; height:580px;
+    background:radial-gradient(circle, rgba(0,170,220,0.17) 0%, transparent 64%);
+    pointer-events:none;
+  }
+
+  .border-frame { position:absolute; top:44px; left:44px; right:44px; bottom:44px; border:1px solid rgba(0,170,220,0.22); pointer-events:none; }
+  .corner { position:absolute; width:26px; height:26px; border-color:#00aadd; border-style:solid; }
+  .corner.tl { top:35px; left:35px; border-width:2px 0 0 2px; }
+  .corner.tr { top:35px; right:35px; border-width:2px 2px 0 0; }
+  .corner.bl { bottom:35px; left:35px; border-width:0 0 2px 2px; }
+  .corner.br { bottom:35px; right:35px; border-width:0 2px 2px 0; }
+
+  .deco-bar {
+    position:absolute; right:168px; top:0; bottom:0; width:1px;
+    background:linear-gradient(180deg, transparent 7%, rgba(0,170,220,0.09) 24%, rgba(0,170,220,0.17) 58%, rgba(0,170,220,0.07) 80%, transparent 95%);
+    z-index:3;
+  }
+
+  .bg-text {
+    position:absolute; right:-55px; bottom:-85px;
+    font-family:'Barlow Condensed',sans-serif; font-size:560px; font-weight:900;
+    color:rgba(0,170,220,0.028); line-height:1; user-select:none; z-index:1;
+  }
+
+  .content {
+    position:relative; z-index:10; width:100%; height:100%;
+    display:flex; flex-direction:column; justify-content:center; align-items:flex-start;
+    padding:100px 190px 100px 112px;
+  }
+
+  .tag-row {
+    display:flex; align-items:center; gap:16px; margin-bottom:50px;
+    animation:fadeUp 0.65s ease both;
+  }
+  .tag-row::before { content:''; display:block; width:50px; height:2px; background:#00aadd; }
+  .tag-text { font-size:11px; font-weight:600; letter-spacing:5px; text-transform:uppercase; color:#00aadd; }
+
+  /* LOGO SVG replicando el diseño real */
+  .logo-wrap { margin-bottom:44px; animation:fadeUp 0.65s 0.1s ease both; }
+
+  .sep-line { width:2px; height:54px; background:linear-gradient(180deg,#00aadd,transparent); margin-bottom:36px; animation:growDown 0.8s 0.2s ease both; }
+
+  .headline {
+    font-family:'Barlow Condensed',sans-serif;
+    font-size:72px; font-weight:700; color:#fff;
+    line-height:0.93; text-transform:uppercase; max-width:570px; margin-bottom:28px;
+    animation:fadeUp 0.65s 0.26s ease both;
+  }
+  .headline .blue { color:#00aadd; }
+  .headline .thin { font-weight:300; color:rgba(255,255,255,0.62); }
+
+  .sub { font-size:19px; font-weight:300; color:rgba(255,255,255,0.48); max-width:440px; line-height:1.65; margin-bottom:60px; animation:fadeUp 0.65s 0.36s ease both; }
+
+  .cta { display:flex; align-items:center; gap:18px; animation:fadeUp 0.65s 0.46s ease both; }
+  .cta-dot { width:8px; height:8px; border-radius:50%; background:#00aadd; box-shadow:0 0 14px rgba(0,170,220,0.65); }
+  .cta-label { font-size:11px; font-weight:600; letter-spacing:4px; text-transform:uppercase; color:rgba(255,255,255,0.42); }
+
+  .city-tag { position:absolute; right:92px; top:92px; z-index:10; font-size:9px; font-weight:500; letter-spacing:3px; text-transform:uppercase; color:rgba(255,255,255,0.2); animation:fadeIn 1s 0.8s ease both; }
+
+  .products { position:absolute; right:92px; bottom:92px; z-index:10; display:flex; flex-direction:column; align-items:flex-end; gap:10px; animation:fadeUp 0.65s 0.65s ease both; }
+  .prod-label { font-size:9px; font-weight:600; letter-spacing:4px; text-transform:uppercase; color:rgba(0,170,220,0.42); }
+  .prod-chips { display:flex; gap:8px; }
+  .chip { font-size:8px; font-weight:500; letter-spacing:2px; text-transform:uppercase; color:rgba(255,255,255,0.28); border:1px solid rgba(0,170,220,0.17); padding:5px 11px; border-radius:2px; background:rgba(0,170,220,0.04); }
+
+  @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+  @keyframes growDown { from{height:0;opacity:0} to{height:54px;opacity:1} }
+</style>
+</head>
+<body>
+<div class="post">
+  <div class="bg-gradient"></div>
+  <div class="bg-grid"></div>
+  <div class="glow-tr"></div>
+  <div class="deco-bar"></div>
+  <div class="bg-text">LQ</div>
+  <div class="border-frame"></div>
+  <div class="corner tl"></div>
+  <div class="corner tr"></div>
+  <div class="corner bl"></div>
+  <div class="corner br"></div>
+  <div class="city-tag">Guadalajara · México</div>
+
+  <div class="content">
+    <div class="tag-row"><span class="tag-text">Bienvenido</span></div>
+
+    <!-- LOGO SVG que replica los colores reales de LENQ -->
+    <div class="logo-wrap">
+      <svg viewBox="0 0 620 175" height="88" xmlns="http://www.w3.org/2000/svg">
+        <!-- LEN en gris claro (sobre fondo oscuro) -->
+        <text x="2" y="148" font-family="Arial Black,Impact,sans-serif" font-size="168" font-weight="900" fill="#b8bec8" letter-spacing="-6">LEN</text>
+        <!-- Q ring (cyan) -->
+        <circle cx="502" cy="78" r="62" fill="none" stroke="#00aadd" stroke-width="20"/>
+        <!-- Q tail / flecha diagonal -->
+        <line x1="480" y1="108" x2="570" y2="10" stroke="#00aadd" stroke-width="18" stroke-linecap="round"/>
+        <polygon points="570,10 568,50 530,10" fill="#00aadd"/>
+        <!-- Rayo interior pequeño -->
+        <polyline points="478,62 498,52 488,78 510,66" fill="none" stroke="#00aadd" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- Texto LIVING ESSENTIALS NEXT QUALITY -->
+        <text x="6" y="172" font-family="Arial,Helvetica,sans-serif" font-size="24" font-weight="400" fill="#5a6270" letter-spacing="7.5">LIVING ESSENTIALS NEXT QUALITY</text>
+      </svg>
+    </div>
+
+    <div class="sep-line"></div>
+
+    <div class="headline">
+      Productos que<br>
+      <span class="blue">transforman</span><br>
+      <span class="thin">tu hogar.</span>
+    </div>
+
+    <div class="sub">
+      Tecnología inteligente diseñada<br>para la vida cotidiana.
+    </div>
+
+    <div class="cta">
+      <div class="cta-dot"></div>
+      <span class="cta-label">Algo extraordinario viene pronto</span>
+    </div>
+  </div>
+
+  <div class="products">
+    <div class="prod-label">Próximamente</div>
+    <div class="prod-chips">
+      <div class="chip">Proyector</div>
+      <div class="chip">Tendedero</div>
+      <div class="chip">Ultrasonido</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
